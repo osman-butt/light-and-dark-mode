@@ -7,6 +7,28 @@ function initApp() {
   document
     .querySelector("#select-color-mode")
     .addEventListener("change", modeSelected);
+  detectUserPreference();
+}
+
+// Detect and set previous selected color mode from localStorage
+function detectUserPreference() {
+  const modeFromLocalStorage = readUserColorMode();
+  if (modeFromLocalStorage) {
+    console.log(modeFromLocalStorage);
+    changeMode(modeFromLocalStorage);
+    document.querySelector("#select-color-mode").value = modeFromLocalStorage;
+  }
+}
+
+// Read and return userColorMode from localStorage
+function readUserColorMode() {
+  const userColorMode = localStorage.getItem("userColorMode");
+  return userColorMode;
+}
+
+// Save color color mode to localStorage
+function saveUserColorMode(mode) {
+  localStorage.setItem("userColorMode", mode);
 }
 
 // modeSelected called when #select-color-mode changes value (the user select color mode)
@@ -14,6 +36,7 @@ function modeSelected() {
   const selectedColorMode = this.value;
   changeMode(selectedColorMode);
   console.log("New color mode selected");
+  saveUserColorMode(selectedColorMode);
 }
 
 function changeMode(mode) {
